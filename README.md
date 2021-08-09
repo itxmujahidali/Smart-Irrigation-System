@@ -1,7 +1,7 @@
 # Smart-Irrigation-System (Django Project)
 
 ## 1. Documentation:
-### Poblem Statement:
+### 1.1 Poblem Statement:
 - Agriculture constitutes the largest sector of our economy, many Pakistani families relied on
 agriculture as their main source of food and their main source of income as well. In the quarantine
 of Covid-19 many farmers were unable to get into their farms causing unexpected loss. We are
@@ -18,7 +18,7 @@ the farming and agriculture industry. A system whose purpose would be to overloo
 conditions and situation of soil and also solve the irrigation problems and this way the over
 wastage of water would be minimized.
 
-### Objective:
+### 1.2 Objective:
 - To provide a practical sustainable monitoring system on self and remote-control
 capabilities of automatic irrigation of water to the crops and plants. All data will be
 collected real time with multi-sensing mechanism that will be analyzed with machine
@@ -29,7 +29,7 @@ irrigation needs inside the farm.
 - Reducing the water wastage happening during the irrigation process and also document the
 findings of the information regarding soil and agricultural water requirements.
 
-### Features Of Project:
+### 1.3 Features Of Project:
 - Our solution will monitor the crops or plants in field and also administer the precise
 amount of water needed only when necessary.
 - Our solution uses smart IoT devices and sensors to measure the soil moisture in order to
@@ -42,37 +42,37 @@ level passes the threshold.
 
 https://user-images.githubusercontent.com/46293412/128762330-f9ab567a-1337-4514-a759-2aedc5296965.jpg
 
-### Implementation Tools and Techniques:
-#### Our system is composed of the following components and modules:
+### 1.4 Implementation Tools and Techniques:
+#### 1.4.1 Our system is composed of the following components and modules:
 - A database containing the known plants and the web app would tell the user about the state
 of his fields. Machine learning models for sensor values and plant recognition and the IoT
 devices which contains the soil moisture sensor, water pump and NodeMCU and finally a
 server that will interface with all of the other components. Many other tools are also
 required for the development are Django, Python and Machine Learning.
 
-## 2. Project Installation Guide
-### Project Requirements:
+## 2. Project Installation Guide:
+### 2.1 Project Requirements:
 - Install Python in your system: https://www.python.org/downloads/
 - Install Django Framework in your system via cmd: pip install django
 - In this project we are using 3.2.6 (it is optional)
 
-### Project Commands (if you want to create your own project (OPTIONAL) ):
-#### Create Project:
+### 2.2 Project Commands (if you want to create your own project (OPTIONAL) ):
+#### 2.2.1 Create Project:
 - django-admin startproject Smart_Irrigation_System
-#### Create App:
+#### 2.2.2 Create App:
 - python manage.py startapp SIS_APP
-#### Run Server:
+#### 2.2.3 Run Server:
 - python manage.py runserver
-#### Make Migrations:
+#### 2.2.4 Make Migrations:
 - python manage.py makemigrations
-#### Make Migrate:
+#### 2.2.5 Make Migrate:
 - python manage.py migrate
-#### Create Super User:
+#### 2.2.6 Create Super User:
 - python manage.py createsuperuser
 
-### Project Commands (if you run this project!)
-#### First Clone this project:
+### 2.3 Project Commands (if you run this project!)
+#### 2.3.1 First Clone this project:
 - git clone https://github.com/itxmujahidali/Smart-Irrigation-System.git
 - Find manage.py file and open cmd at the same path where manage.py file exist!
-#### Run Server
+#### 2.3.2 Run Server
 - python manage.py runserver
