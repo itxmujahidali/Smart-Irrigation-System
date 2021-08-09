@@ -40,8 +40,6 @@ which measure the moisture after every fixed time period.
 threshold is to be found lower then the water pump will be turned on until the moisture
 level passes the threshold.
 
-https://user-images.githubusercontent.com/46293412/128762330-f9ab567a-1337-4514-a759-2aedc5296965.jpg
-
 ### 1.4 Implementation Tools and Techniques:
 #### 1.4.1 Our system is composed of the following components and modules:
 - A database containing the known plants and the web app would tell the user about the state
