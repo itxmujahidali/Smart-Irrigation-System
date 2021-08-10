@@ -8,6 +8,7 @@ urlpatterns = [
     path('index', views.index, name='index'),
     path('login', views.login, name='login'),
     path('register', views.register, name='register'),
+    path('settings', views.settings, name='settings'),
     path('error404', views.error404, name='error404'),
     path('error500', views.error500, name='error500'),
 ] 

@@ -15,3 +15,6 @@ def error404(request):
 
 def error500(request):
     return render (request, 'error500.html')
+
+def settings(request):
+    return render (request, 'account_settings.html')
