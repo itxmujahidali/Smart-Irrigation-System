@@ -52,7 +52,7 @@ required for the development are Django, Python and Machine Learning.
 ### 2.1 Project Requirements:
 - Install Python in your system: https://www.python.org/downloads/
 - Install Django Framework in your system via cmd: pip install django
-- In this project we are using 3.2.6 (it is optional)
+- In this project we are using django version 3.2.6 (it is optional)
 
 ### 2.2 Project Commands (if you want to create your own project (OPTIONAL) ):
 #### 2.2.1 Create Project:
