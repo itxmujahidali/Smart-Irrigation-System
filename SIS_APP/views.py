@@ -2,11 +2,17 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.http import HttpResponse
 from .models import WebUser
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
 def index(request):
-    return render(request, 'index.html')
+    if request.session.has_key('name'):
+        name = request.session.get('name')
+        # return HttpResponse(name)
+        return render(request, 'index.html',{'name':name})
+    else:
+        return render(request, 'login.html')
 
 # ------------------------------------------->  Login logic
 def login(request):
@@ -22,7 +28,11 @@ def login(request):
             return HttpResponse("User Dosen't Exist!")
 
         if (login_email == CheckUser.email and login_password == CheckUser.Password):
-            return render(request, 'index.html')
+            #set session
+            request.session['id'] = CheckUser.user_id
+            request.session['name'] = CheckUser.name
+            # request.session.set_expiry(300)
+            return render (request, 'index.html')
         else:
             return HttpResponse("Email or Password are wrong!")
 
@@ -67,3 +77,7 @@ def error500(request):
 
 def settings(request):
     return render(request, 'account_settings.html')
+
+def logout(request):
+    request.session.flush()
+    return render(request, 'login.html')

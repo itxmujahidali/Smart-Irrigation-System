@@ -1,13 +1,13 @@
 # importing modules
 from django.http.response import HttpResponse
-from .models import WeatherAPI
+from .models import WeatherAPI, WebUser
 from django.shortcuts import render
 import requests, json
 
 def weather(request):
 
     try:
-        id = 5 #Hardcode user data for city
+        id = request.session['id'] #getting id by session
         info = WeatherAPI.objects.filter(FK_weather = id)
         CITY = info[0].city
     except:
@@ -58,6 +58,12 @@ def weather(request):
         dic_description = dic_description.capitalize() #Capitalize First Letter
         dic_speed =  wind_report['speed']
         dic_timezone =  data['timezone']
+
+        #Save value in database
+        # webuser = WebUser.objects.get(user_id=5)
+        # api_database = WeatherAPI(FK_weather=webuser,city=CITY, city_id=dic_id, temperature=dic_tempreature, feels_like=dic_feels_like, 
+        # humidity=dic_humidity, weather_report=dic_description, wind_speed=dic_speed, time_zone=dic_timezone)
+        # api_database.save()
 
         return render (request, 'weather.html', {
             'CITY': CITY,
