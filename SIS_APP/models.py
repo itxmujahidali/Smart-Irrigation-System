@@ -5,7 +5,9 @@ class WebUser(models.Model):
 
     user_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50)
+    farm_name = models.CharField(max_length=50)
     email = models.CharField(max_length=50)
+    contact = models.CharField(max_length=50)
     Password = models.CharField(max_length=50)
     account_created = datetime.now()
 

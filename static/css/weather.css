@@ -1,0 +1,192 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,500,700,900,300);
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  color: #fff;
+  font-family: 'Roboto', Helvetica, Arial, sans-serif;
+}
+
+.widget-container {
+  height: 315px;
+  display: block;
+  background-color: #7978e9;
+  border-radius: 25px;
+/*   border: 5px solid #eceff1; */
+  margin: 0 auto;
+}
+
+
+/* Widget 4 Quarter Division here */
+
+.top-left {
+  height: 40%;
+  width: 50%;
+  /*   background-color:red; */
+  padding: 55px 0 0 45px;
+  display: inline-block;
+}
+
+.top-right {
+  height: 40%;
+  width: 50%;
+  /*   background-color: blue; */
+  float: right;
+  padding: 55px 0 0 0;
+}
+
+.bottom-left {
+  height: 30%;
+  width: 45%;
+  /*   background-color:orange; */
+  float: left;
+  margin: 0;
+  padding: 40px 0 0 50px;
+}
+
+.bottom-right {
+  height: 30%;
+  width: 55%;
+  /*   background-color: brown; */
+  float: right;
+  padding: 12px 0 0 60px;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+  padding: 0;
+}
+
+
+/* Top-left Div CSS */
+
+#city {
+  font-weight: 900;
+  font-size: 25px;
+}
+
+#weather_heading {
+  font-weight: 700;
+  font-size: 22px;
+  margin-top: -15px;
+}
+
+#status {
+  font-weight: 500;
+  font-size: 22px;
+  margin-top: 4px;
+}
+
+#time {
+  font-weight: 400;
+  font-size: 18px;
+  margin-top: 8px;
+}
+
+#codepen-link {
+  font-weight: 400;
+  font-size: 12px;
+  margin-top: 20px;
+}
+
+.top-left > a {
+  text-decoration: none;
+  color: white;
+}
+
+.top-left > a:hover {
+  color: #b0bec5;
+}
+
+
+/* Top-Right Div CSS */
+
+#weather-status {
+  font-size: 18px;
+  font-weight: 300;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.top-right > img {
+  width: 70px;
+  height: 70px;
+  display: block;
+  margin: -15px 40px 0 auto;
+}
+
+
+/* Horizontal-Half-divider */
+
+.horizontal-half-divider {
+  width: 100%;
+  height: 3px;
+  margin-top: 25px;
+  background-color: #263238;
+}
+
+.vertical-half-divider {
+  width: 3px;
+  position: absolute;
+  height: 160px;
+  background-color: #263238;
+  display: inline-block;
+  padding: 0;
+}
+
+
+/* Bottom-left CSS */
+
+#temperature,
+#celsius,
+#temp-divider,
+#fahrenheit {
+  display: inline;
+  vertical-align: middle;
+}
+
+#temperature {
+  font-size: 60px;
+  font-weight: 800;
+  margin-right: 5px;
+}
+
+#celsius {
+  margin-right: 10px;
+  color: #b0bec5;
+}
+
+
+#celsius,
+#temp-divider,
+#fahrenheit {
+  font-size: 30px;
+  font-weight: 800;
+}
+
+#celsius:hover,
+#fahrenheit:hover {
+  cursor: pointer;
+}
+
+
+
+
+/* Bottom-Right CSS */
+
+.other-details-key {
+  float: left;
+  font-size: 16px;
+  font-weight: 300;
+}
+
+.other-details-values {
+  float: left;
+  font-size: 16px;
+  font-weight: 400;
+  margin-left: 40px;
+}
