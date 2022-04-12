@@ -7,6 +7,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Smart Irrigation System</title> 
   <!-- Plugin css for this page -->
+  <link rel="stylesheet" href="weather.css">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/weather.css' %}">
   <link rel="stylesheet" type="text/css" href="{% static 'js/select.dataTables.min.css' %}">
   <!-- Bootstrap js for this page -->
   <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
@@ -110,9 +112,7 @@
                 <div class="col-12 col-xl-4">
                  <div class="justify-content-end d-flex">
                   <div class="flex-md-grow-1 flex-xl-grow-0">
-                    <button class="btn btn-sm btn-dark bg-dark " id="dropdownMenuDate2"  aria-haspopup="true" aria-expanded="true">
-                     <i class="mdi mdi-calendar"></i> <a href="/weather" style="text-decoration: none; color: white;">Weather: Partly Cloude </a>
-                    </button>
+                   <!--You can add some content (Top Right - In the front of All systems are running smoothly!)-->
                   </div>
                  </div>
                 </div>
@@ -122,20 +122,40 @@
           <div class="row">
             <div class="col-md-6 grid-margin stretch-card">
               <div class="card tale-bg">
-                <div class="card-people mt-auto" style="padding-top: 0px;">
-                  <img src="{% static '/images/peoples.jpg' %}" alt="peoples">
-                  <div class="weather-info">
-                    <div class="d-flex">
-                      <div>
-                        <h2 class="mb-0 font-weight-normal"><i class="icon-sun mr-2"></i>31<sup>C</sup></h2>
+                
+                  <div class="widget-container" style="height:315px; width:500px;">
+                    <div class="top-left">
+                      <h2 id="weather_heading">Weather Condition</h2>
+                      <h3 id="status">"{{dic_description}}"</h3>  
+                     <p class="geo"></p>
+                    </div>
+                    <div class="top-right">
+                      <img class="weather-icon" src="https://myleschuahiock.files.wordpress.com/2016/02/sunny2.png">
+                    </div>
+                    <div class="horizontal-half-divider"></div>
+                    <div class="bottom-left">
+                      <h1 id="temperature">{{dic_tempreature}}</h1>
+                      <h2 id="celsius">&degC</h2>
+                    </div>
+                    <div class="vertical-half-divider"></div>
+                    <div class="bottom-right">
+                      <div class="other-details-key">
+                        <p>City</p>
+                        <p>Time Zone</p>
+                        <p>Feels Like</p>
+                        <p>Wind Speed</p>
+                        <p>Humidity</p>
                       </div>
-                      <div class="ml-2">
-                        <h4 class="location font-weight-normal">Lahore</h4>
-                        <h6 class="font-weight-normal">Pakistan</h6>
+                      <div class="other-details-values">
+                        <p>{{CITY}}</p>
+                        <p>{{dic_timezone}}</p>
+                        <p>{{dic_feels_like}}°C</p>
+                        <p class="windspeed">{{dic_speed}}Km/h</p>
+                        <p class="humidity">{{dic_humidity}}%</p>
                       </div>
                     </div>
                   </div>
-                </div>
+
               </div>
             </div>
             <div class="col-md-6 grid-margin transparent">
@@ -284,6 +304,7 @@
   <script src="{% static 'js/settings.js' %}"></script>
   <script src="{% static 'js/todolist.js' %}"></script>
   <script src="{% static 'js/dashboard.js' %}"></script>
+  <script src="{% static 'js/weather.js' %}"></script>
   <script src="{% static 'js/Chart.roundedBarCharts.js' %}"></script>
 </body>
 
