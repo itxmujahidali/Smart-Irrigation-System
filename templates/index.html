@@ -7,6 +7,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Smart Irrigation System</title> 
   <!-- Plugin css for this page -->
+  <link rel="stylesheet" href="weather.css">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/weather.css' %}">
   <link rel="stylesheet" type="text/css" href="{% static 'js/select.dataTables.min.css' %}">
   <!-- Bootstrap js for this page -->
   <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
@@ -31,20 +33,11 @@
           <span class="icon-menu"></span>
         </button>
         <ul class="navbar-nav mr-lg-2">
-          <li class="nav-item nav-search d-none d-lg-block">
-            <div class="input-group">
-              <div class="input-group-prepend hover-cursor" id="navbar-search-icon">
-                <span class="input-group-text" id="search">
-                  <i class="icon-search"></i>
-                </span>
-              </div>
-              <input type="text" class="form-control" id="navbar-search-input" placeholder="Search now" aria-label="search" aria-describedby="search">
-            </div>
-          </li>
+          
         </ul>
         <ul class="navbar-nav navbar-nav-right">
           <li class="profile_name">
-            <h6>Welcome <span class="profile_name_color"> Mujahid </span></h6>
+            <h6>Welcome <span class="profile_name_color"> {{name}} </span></h6>
           </li>
           <li class="nav-item nav-profile dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
@@ -63,7 +56,7 @@
                 <i class="ti-settings text-primary"></i>
                 Settings
               </a>
-              <a class="dropdown-item" href="/login">
+              <a class="dropdown-item" href="/logout">
                 <i class="ti-power-off text-primary"></i>
                 Logout
               </a>
@@ -99,7 +92,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/login">
+            <a class="nav-link" href="/logout">
               <i class="icon-paper menu-icon"></i>
               <span class="menu-title">Logout</span>
             </a>
@@ -113,15 +106,13 @@
             <div class="col-md-12 grid-margin">
               <div class="row">
                 <div class="col-12 col-xl-8 mb-4 mb-xl-0">
-                  <h3 class="font-weight-bold">Welcome Mujahid</h3>
+                  <h3 class="font-weight-bold">Welcome {{name}}</h3>
                   <h6 class="font-weight-normal mb-0">All systems are running smoothly!</h6>
                 </div>
                 <div class="col-12 col-xl-4">
                  <div class="justify-content-end d-flex">
                   <div class="flex-md-grow-1 flex-xl-grow-0">
-                    <button class="btn btn-sm btn-dark bg-dark " id="dropdownMenuDate2"  aria-haspopup="true" aria-expanded="true">
-                     <i class="mdi mdi-calendar"></i> Today (10 August 2021)
-                    </button>
+                   <!--You can add some content (Top Right - In the front of All systems are running smoothly!)-->
                   </div>
                  </div>
                 </div>
@@ -131,20 +122,40 @@
           <div class="row">
             <div class="col-md-6 grid-margin stretch-card">
               <div class="card tale-bg">
-                <div class="card-people mt-auto" style="padding-top: 0px;">
-                  <img src="{% static '/images/peoples.jpg' %}" alt="peoples">
-                  <div class="weather-info">
-                    <div class="d-flex">
-                      <div>
-                        <h2 class="mb-0 font-weight-normal"><i class="icon-sun mr-2"></i>31<sup>C</sup></h2>
+                
+                  <div class="widget-container" style="height:315px; width:500px;">
+                    <div class="top-left">
+                      <h2 id="weather_heading">Weather Condition</h2>
+                      <h3 id="status">"{{dic_description}}"</h3>  
+                     <p class="geo"></p>
+                    </div>
+                    <div class="top-right">
+                      <img class="weather-icon" src="https://myleschuahiock.files.wordpress.com/2016/02/sunny2.png">
+                    </div>
+                    <div class="horizontal-half-divider"></div>
+                    <div class="bottom-left">
+                      <h1 id="temperature">{{dic_tempreature}}</h1>
+                      <h2 id="celsius">&degC</h2>
+                    </div>
+                    <div class="vertical-half-divider"></div>
+                    <div class="bottom-right">
+                      <div class="other-details-key">
+                        <p>City</p>
+                        <p>Time Zone</p>
+                        <p>Feels Like</p>
+                        <p>Wind Speed</p>
+                        <p>Humidity</p>
                       </div>
-                      <div class="ml-2">
-                        <h4 class="location font-weight-normal">Lahore</h4>
-                        <h6 class="font-weight-normal">Pakistan</h6>
+                      <div class="other-details-values">
+                        <p>{{CITY}}</p>
+                        <p>{{dic_timezone}}</p>
+                        <p>{{dic_feels_like}}°C</p>
+                        <p class="windspeed">{{dic_speed}}Km/h</p>
+                        <p class="humidity">{{dic_humidity}}%</p>
                       </div>
                     </div>
                   </div>
-                </div>
+
               </div>
             </div>
             <div class="col-md-6 grid-margin transparent">
@@ -202,13 +213,13 @@
                           <thead>
                             <tr>
                               <th>Sr#</th>
-                              <th>Product</th>
-                              <th>Business type</th>
-                              <th>Policy holder</th>
-                              <th>Premium</th>
-                              <th>Status</th>
-                              <th>Updated at</th>
-                              <th></th>
+                              <th>Plant Name</th>
+                              <th> Square Feet</th>
+                              <th>Total Sensor</th>
+                              <th>Sensor Status</th>
+                              <!-- <th>Sensor Offline</th> -->
+                              <th>Wet/Dry</th>
+                              <th>Update Time</th>
                             </tr>
                             <tr>
                               <td>1</td>
@@ -293,6 +304,7 @@
   <script src="{% static 'js/settings.js' %}"></script>
   <script src="{% static 'js/todolist.js' %}"></script>
   <script src="{% static 'js/dashboard.js' %}"></script>
+  <script src="{% static 'js/weather.js' %}"></script>
   <script src="{% static 'js/Chart.roundedBarCharts.js' %}"></script>
 </body>
 
