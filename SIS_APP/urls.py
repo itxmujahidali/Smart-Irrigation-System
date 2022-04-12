@@ -1,4 +1,4 @@
-from SIS_APP import weatherAPI
+
 from django.contrib import admin
 from django.urls import path
 

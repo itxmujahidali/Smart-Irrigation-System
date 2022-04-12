@@ -82,7 +82,7 @@ def index(request):
             'dic_humidity': dic_humidity,
             'dic_description': dic_description,
             'dic_speed': dic_speed,
-            'dic_timezone': dic_timezone}
+            'dic_timezone': dic_timezone,}
             )
 
     else:
