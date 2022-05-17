@@ -48,6 +48,10 @@
                 <i class="ti-settings text-primary"></i>
                 Dashboard
               </a>
+              <a class="dropdown-item" href="/statics">
+                <i class="ti-settings text-primary"></i>
+                Statics
+              </a>
               <a class="dropdown-item" href="#">
                 <i class="ti-settings text-primary"></i>
                 Add Sensors
@@ -77,6 +81,12 @@
             <a class="nav-link" href="/">
               <i class="icon-grid menu-icon"></i>
               <span class="menu-title">Dashboard</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/statics">
+              <i class="icon-grid menu-icon"></i>
+              <span class="menu-title">Statics</span>
             </a>
           </li>
           <li class="nav-item">
@@ -125,8 +135,8 @@
                 
                   <div class="widget-container" style="height:315px; width:500px;">
                     <div class="top-left">
-                      <h2 id="weather_heading">Weather Condition</h2>
-                      <h3 id="status">"{{dic_description}}"</h3>  
+                      <h2 style="color:aliceblue;" id="weather_heading">Weather Condition</h2>
+                      <h3 style="color:aliceblue;" id="status">"{{dic_description}}"</h3>  
                      <p class="geo"></p>
                     </div>
                     <div class="top-right">
@@ -134,19 +144,19 @@
                     </div>
                     <div class="horizontal-half-divider"></div>
                     <div class="bottom-left">
-                      <h1 id="temperature">{{dic_tempreature}}</h1>
+                      <h1 style="color:aliceblue;" id="temperature">{{dic_tempreature}}</h1>
                       <h2 id="celsius">&degC</h2>
                     </div>
                     <div class="vertical-half-divider"></div>
                     <div class="bottom-right">
-                      <div class="other-details-key">
+                      <div class="other-details-key" style="color:white;">
                         <p>City</p>
                         <p>Time Zone</p>
                         <p>Feels Like</p>
                         <p>Wind Speed</p>
                         <p>Humidity</p>
                       </div>
-                      <div class="other-details-values">
+                      <div class="other-details-values" style="color:white;">
                         <p>{{CITY}}</p>
                         <p>{{dic_timezone}}</p>
                         <p>{{dic_feels_like}}°C</p>
