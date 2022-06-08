@@ -4,11 +4,14 @@ from datetime import datetime
 class WebUser(models.Model):
 
     user_id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=30)
+    lname = models.CharField(max_length=30)
     farm_name = models.CharField(max_length=50)
     email = models.CharField(max_length=50)
     contact = models.CharField(max_length=50)
     Password = models.CharField(max_length=50)
+    recovery_code = models.CharField(max_length=6)
+    city = models.CharField(max_length=100)
     account_created = datetime.now()
 
     def __str__(self):
@@ -40,22 +43,6 @@ class Sensor(models.Model):
 
     def __str__(self):
         return self.sensor_name
-
-class WeatherAPI(models.Model):
-
-    FK_weather = models.ForeignKey('WebUser', on_delete=models.CASCADE)
-
-    city = models.CharField(max_length=100)
-    city_id = models.IntegerField()
-    temperature = models.FloatField()
-    feels_like = models.FloatField()
-    humidity = models.IntegerField()
-    weather_report = models.CharField(max_length=30)
-    wind_speed = models.FloatField()
-    time_zone = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.city
 
 
 class ScheduleWater(models.Model):

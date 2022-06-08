@@ -3,9 +3,10 @@ from datetime import datetime
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.http import HttpResponse
-from .models import WebUser, WeatherAPI
-from django.contrib.auth.decorators import login_required
+from .models import WebUser
 from django.views.decorators.csrf import csrf_exempt
+import smtplib
+from random import randint
 
 
 # Create your views here.
@@ -19,7 +20,7 @@ def index(request):
             
         try:
             id = request.session['id'] #getting id by session
-            info = WeatherAPI.objects.filter(FK_weather = id)
+            info = WebUser.objects.filter(user_id = id)
             CITY = info[0].city
         except:
             return HttpResponse ("City Error!")
@@ -141,6 +142,7 @@ def register(request):
     if request.method == 'POST':
         name = request.POST['name']
         email = request.POST['email']
+        city = request.POST['city']
         password1 = request.POST['password1']
         password2 = request.POST['password2']
 
@@ -148,8 +150,9 @@ def register(request):
             password = password1
             # Sending HTML-Data to Model for store into Database!
             # Creating class object
-            User = WebUser(name=name, email=email, Password=password)
+            User = WebUser(name=name, email=email, city=city, Password=password)
             User.save()
+            
             return render(request, 'login.html')
         else:
             return HttpResponse("Password didn't match!")
@@ -165,34 +168,141 @@ def settings(request):
     id = request.session.get('id')
     user =  WebUser.objects.get(user_id=id)
     user_name = user.name
+    user_lname = user.lname
     farm_name = user.farm_name
-    user_email = user.email
-    user_contact = user.contact
+    contact = user.contact
     if(request.method == "POST"):
-        farm_name = request.POST['farmName']
-        user_name = request.POST['name']
-        user_email = request.POST['email']
-        user_contact = request.POST['contact']
-        User = WebUser(farm_name=farm_name, user_name=user_name, email=user_email, user_contact=user_contact)
-        User.save()
+        input_farm_name = request.POST['farmName']
+        input_name = request.POST['name']
+        input_lname = request.POST['lname']
+        input_contact = request.POST['contact']
+        #User = WebUser(farm_name=input_farm_name, name=input_name, contact=input_contact)
+        user.name = input_name
+        user.lname = input_lname
+        user.farm_name = input_farm_name
+        user.contact = input_contact
+        user.save(update_fields=['name','lname','farm_name','contact'])
         return render(request, 'account_settings.html',
-            {"user_name":user_name,'user_email':user_email,"farm_name":farm_name,"user_contact":user_contact})
+            {"user_name":user_name,"farm_name":farm_name,"contact":contact})
     else:
+        #return HttpResponse (user_name)
         return render(request, 'account_settings.html',
-            {"user_name":user_name,'user_email':user_email,"farm_name":farm_name,"user_contact":user_contact})
+            {"user_name":user_name,"user_lname":user_lname,"farm_name":farm_name,"contact":contact})
 
 
 def statics(request):
     return render(request, 'statics.html')
 
+def changepassword(request):
+    id = request.session.get('id')
+    user =  WebUser.objects.get(user_id=id)
+    user_password = user.Password
+    if(request.method == "POST"):
+        current_password= request.POST['currentpassword']
+        new_password = request.POST['newpassword']
+        confirm_password = request.POST['confirmpassword']
+        if (current_password == user_password):
+            if (new_password == confirm_password):
+                user.Password = new_password
+                user.save(update_fields=['Password'])
+                return render(request, 'changepassword.html')
+            else:
+                return HttpResponse ("Your New Password is not match with confirm password!")
+        else:
+            return HttpResponse("Your Current password is incorrect!")
+    return render(request, 'changepassword.html')
+
+def dangerzone(request):
+    if (request.method == "POST"):
+        id = request.session.get('id')
+        user =  WebUser.objects.get(user_id=id)
+        user.delete()
+        return render(request, 'login.html')
+
+    else:
+        return render(request, 'deleteaccount.html')
+
 def addsensors(request):
     return render(request, 'addsensors.html')
 
 def forgetpassword1(request):
-    return render(request, 'forgetpassword1.html')
+    if(request.method == "POST"):
+        email = request.POST['email']
+
+        # Compare with Database where input email exist!
+        try:
+            CheckEmail = WebUser.objects.get(email=email)
+        except:
+            return HttpResponse("Please enter your correct email!")
+        
+        if (email == CheckEmail.email):
+            #send email code
+            #try:
+                gmail_user = "samswebdev58@gmail.com"
+                gmail_pwd = "Skype123."
+                TO = email
+                SUBJECT = "SIS Recovery Code"
+                TEXT = "Your recovery code is: "
+                server = smtplib.SMTP('smtp.gmail.com', 587)
+                server.ehlo()
+                server.starttls()
+                server.login(gmail_user, gmail_pwd)
+
+                #generating random numbers
+                number_generate = randint(100001,999999)
+
+                BODY = '\r\n'.join(['To: %s' % TO,
+                        'From: %s' % gmail_user,
+                        'Subject: %s' % SUBJECT,
+                        '', TEXT+str(number_generate)])
+
+                server.sendmail(gmail_user, [TO], BODY)
+
+                CheckEmail = WebUser.objects.get(email=email)
+                CheckEmail.recovery_code = number_generate
+                CheckEmail.save()
+
+                print (f'Email has been send! \nRecovery code is: {number_generate}')
+                return render(request, 'forgetpassword2.html', {"email": email})
+                
+            #except:
+                #return HttpResponse(email)
+        else:
+            return HttpResponse("Your Email isn't match with our database record!")
+        #return render(request, 'forgetpassword2.html')
+    
+    else:
+        return render(request, 'forgetpassword1.html')
 
 def forgetpassword2(request):
-    return render(request, 'forgetpassword2.html')
+    if (request.method == "POST"):
+        user_email = request.POST["email"]
+        print(user_email)
+
+        try:
+            six_digit_code = request.POST["six_digit_code"]
+            print(six_digit_code)
+            # Compare with Database where input email exist!
+            print(f"Six Digit code is:{six_digit_code}")
+            #print(six_digit_code)
+
+            #---------------------------------ERRRRRRRRRRRRRRRRRRRRRROOOOOOOOOOOOOOOOOOORRRRRRRRRRRRRR__________________
+            CheckEmail = WebUser.objects.get(email="thisalitalks@gmail.com")
+            print(CheckEmail.recovery_code)
+            code = CheckEmail.recovery_code
+            print(f"code is:{code}")
+
+            if (six_digit_code == code):
+                return render(request, 'forgetpassword3.html', {"email":user_email})
+                return HttpResponse("Code has been matched with database code. Test Successfull!")
+            else:
+                return HttpResponse("Code hasn't been matched!")
+
+        except:
+            #return HttpResponse("Running Exception code! ")
+            return render(request, 'forgetpassword2.html')    
+    else:
+        return HttpResponse("ELSE CONDITION")
 
 def forgetpassword3(request):
     return render(request, 'forgetpassword3.html')
