@@ -37,9 +37,9 @@ class Sensor(models.Model):
     sensorkey = models.IntegerField()
     FK_sensor = models.ForeignKey('WebUser', on_delete=models.CASCADE)
     sensor_name = models.CharField(max_length=50)
-    moistuer_level = models.IntegerField()
-    sensor_update_time = models.DateTimeField( default=datetime.now)
-    sensor_status = models.BooleanField(default=False)
+    plant_name = models.CharField(max_length=50)
+    moistuer_level = models.IntegerField( blank=True, null=True)
+    sensor_update_time = models.DateTimeField( default=datetime.now,  blank=True, null=True)
 
     def __str__(self):
         return self.sensor_name

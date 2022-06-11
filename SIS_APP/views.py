@@ -182,7 +182,10 @@ def settings(request):
         #User = WebUser(farm_name=input_farm_name, name=input_name, contact=input_contact)
         user.name = input_name
         user.lname = input_lname
-        user.city = input_cityname
+        if (input_cityname == ""):
+            pass
+        else:
+            user.city = input_cityname
         user.farm_name = input_farm_name
         user.contact = input_contact
         user.save(update_fields=['name','lname', 'city', 'farm_name','contact'])
@@ -219,37 +222,45 @@ def statistics(request):
     id = request.session.get('id')
     sensor = Sensor.objects.filter(FK_sensor=id)
     # sensor = Sensor.objects.filter(FK_sensor=id, sensorkey=112233).order_by('-sensorkey')[:5]
-    
-    sensor_key_list = []
-    # sensor_name_list = []
-    sensor_name_list = []
-    # sensor_update_time_list = []
+    try:
+        sensor_key_list = []
+        # sensor_name_list = []
+        sensor_name_list = []
+        sensor_plant_list = []
+        # sensor_update_time_list = []
 
-    for sensor_index in sensor:
-        sensor_key = sensor_index.sensorkey
-        # sensor_name = sensor_index.sensor_name
-        sensor_name = sensor_index.sensor_name
-        sensor_update_time = sensor_index.sensor_update_time
+        for sensor_index in sensor:
+            sensor_key = sensor_index.sensorkey
+            # sensor_name = sensor_index.sensor_name
+            sensor_name = sensor_index.sensor_name
+            sensor_plant = sensor_index.plant_name
+            # sensor_update_time = sensor_index.sensor_update_time
 
-        sensor_key_list.append(sensor_key)
-        # sensor_name_list.append(sensor_name)
-        sensor_name_list.append(sensor_name)
-        # sensor_update_time_list.append(sensor_update_time)
+            sensor_key_list.append(sensor_key)
+            # sensor_name_list.append(sensor_name)
+            sensor_name_list.append(sensor_name)
+            sensor_plant_list.append(sensor_plant)
+            # sensor_update_time_list.append(sensor_update_time)
 
-    temp_sensor_name = sensor_name_list[-1]
-    # temp_sensor_update_time = sensor_update_time_list[-1]
+        temp_sensor_name = sensor_name_list[-1]
+        temp_plant_name = sensor_plant_list[-1]
+        # temp_sensor_update_time = sensor_update_time_list[-1]
 
-    # print(f'{"temp_moisture_level----->",temp_sensor_name}')
-    #Generating unique sensor key
+        # print(f'{"temp_moisture_level----->",temp_sensor_name}')
+        #Generating unique sensor key
 
-    unique_sensor_key = []
-    # insert the list to the set
-    list_set = set(sensor_key_list)
-    # convert the set to the list
-    unique_sensor_key = (list(list_set))
+        unique_sensor_key = []
+        # insert the list to the set
+        list_set = set(sensor_key_list)
+        # convert the set to the list
+        unique_sensor_key = (list(list_set))
 
-    return render(request, 'statistics.html', context={
-         "unique_sensor_key": unique_sensor_key, "temp_sensor_name": temp_sensor_name   })
+        return render(request, 'statistics.html', context={
+            "unique_sensor_key": unique_sensor_key, "temp_sensor_name": temp_sensor_name, "temp_plant_name" : temp_plant_name,
+            
+            })
+    except:
+        return HttpResponse("Please Add Some Sensors!")
 
 def changepassword(request):
     id = request.session.get('id')
@@ -281,7 +292,43 @@ def dangerzone(request):
         return render(request, 'deleteaccount.html')
 
 def addsensors(request):
-    return render(request, 'addsensors.html')
+    if (request.method == "POST"):
+        id = request.session.get('id')
+        input_sensorid = request.POST['sensorid']
+        input_sensor_name = request.POST['sensorname']
+        input_plantname = request.POST['plantname']
+
+        try:
+
+            #must use objects.get when you add data in DB through foreign key
+            user =  WebUser.objects.get(user_id=id)
+
+            key = ""
+            filter_sensor_key =  Sensor.objects.filter(sensorkey=input_sensorid)
+            for loop in filter_sensor_key:
+                key = loop.sensorkey
+            
+            # key = filter_sensor_key.sensorkey
+            
+            input_sensorid = int(input_sensorid)
+            # print(type(input_sensorid))
+            print(key)
+            if(key != input_sensorid or key == ""):
+
+                moisture = 0
+                #add data through foreign key in database
+                sensor = Sensor.objects.create(FK_sensor=user, sensorkey=input_sensorid, plant_name=input_plantname, sensor_name=input_sensor_name,
+                    moistuer_level= moisture
+                )
+                sensor.save()
+                # print(user_id)
+                return render(request, 'addsensors.html')
+            else:
+                return HttpResponse("SensorID is already taken!")
+        except:
+            return HttpResponse("Something went wrong!")
+    else:
+        return render(request, 'addsensors.html')
 
 
 def forgetpassword1(request):
