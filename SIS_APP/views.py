@@ -1,9 +1,10 @@
+from asyncio.windows_events import NULL
 import json, csv, os.path, requests
 from datetime import datetime
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.http import HttpResponse
-from .models import WebUser
+from .models import WebUser, Sensor
 from django.views.decorators.csrf import csrf_exempt
 import smtplib
 from random import randint
@@ -169,29 +170,86 @@ def settings(request):
     user =  WebUser.objects.get(user_id=id)
     user_name = user.name
     user_lname = user.lname
+    user_city = user.city
     farm_name = user.farm_name
     contact = user.contact
     if(request.method == "POST"):
         input_farm_name = request.POST['farmName']
         input_name = request.POST['name']
         input_lname = request.POST['lname']
+        input_cityname = request.POST['cityname']
         input_contact = request.POST['contact']
         #User = WebUser(farm_name=input_farm_name, name=input_name, contact=input_contact)
         user.name = input_name
         user.lname = input_lname
+        user.city = input_cityname
         user.farm_name = input_farm_name
         user.contact = input_contact
-        user.save(update_fields=['name','lname','farm_name','contact'])
+        user.save(update_fields=['name','lname', 'city', 'farm_name','contact'])
         return render(request, 'account_settings.html',
-            {"user_name":user_name,"farm_name":farm_name,"contact":contact})
+            {"user_name":user_name,"farm_name":farm_name,"contact":contact, "user_city":user_city })
     else:
         #return HttpResponse (user_name)
         return render(request, 'account_settings.html',
             {"user_name":user_name,"user_lname":user_lname,"farm_name":farm_name,"contact":contact})
 
 
-def statics(request):
-    return render(request, 'statics.html')
+def graph(request, sensorid):
+    sensor_id = int(sensorid)
+    sensor = Sensor.objects.filter(sensorkey=sensorid)
+    moisture_level_list = []
+    sensor_update_time_list = []
+
+    for sensor_index in sensor:
+        moisture_level = sensor_index.moistuer_level
+        sensor_update_time = sensor_index.sensor_update_time
+        moisture_level_list.append(moisture_level)
+        sensor_update_time_list.append(sensor_update_time)
+    slice_moisture_level_list = moisture_level_list[-1:-11:-1]
+    slice_moisture_level_list = slice_moisture_level_list[-1:-11:-1]
+    # print(f'{"moisture_level_list---------------->",slice_moisture_level_list}')
+    slice_sensor_update_time_list = sensor_update_time_list[-1:-11:-1]
+    slice_sensor_update_time_list = slice_sensor_update_time_list[-1:-11:-1]
+
+    return render(request, 'graph.html', context={
+        "sensor_id": sensor_id, "moisture_level_list": slice_moisture_level_list, "sensor_update_time_list": slice_sensor_update_time_list
+    })
+
+def statistics(request):
+    id = request.session.get('id')
+    sensor = Sensor.objects.filter(FK_sensor=id)
+    # sensor = Sensor.objects.filter(FK_sensor=id, sensorkey=112233).order_by('-sensorkey')[:5]
+    
+    sensor_key_list = []
+    # sensor_name_list = []
+    sensor_name_list = []
+    # sensor_update_time_list = []
+
+    for sensor_index in sensor:
+        sensor_key = sensor_index.sensorkey
+        # sensor_name = sensor_index.sensor_name
+        sensor_name = sensor_index.sensor_name
+        sensor_update_time = sensor_index.sensor_update_time
+
+        sensor_key_list.append(sensor_key)
+        # sensor_name_list.append(sensor_name)
+        sensor_name_list.append(sensor_name)
+        # sensor_update_time_list.append(sensor_update_time)
+
+    temp_sensor_name = sensor_name_list[-1]
+    # temp_sensor_update_time = sensor_update_time_list[-1]
+
+    # print(f'{"temp_moisture_level----->",temp_sensor_name}')
+    #Generating unique sensor key
+
+    unique_sensor_key = []
+    # insert the list to the set
+    list_set = set(sensor_key_list)
+    # convert the set to the list
+    unique_sensor_key = (list(list_set))
+
+    return render(request, 'statistics.html', context={
+         "unique_sensor_key": unique_sensor_key, "temp_sensor_name": temp_sensor_name   })
 
 def changepassword(request):
     id = request.session.get('id')
@@ -224,6 +282,7 @@ def dangerzone(request):
 
 def addsensors(request):
     return render(request, 'addsensors.html')
+
 
 def forgetpassword1(request):
     if(request.method == "POST"):

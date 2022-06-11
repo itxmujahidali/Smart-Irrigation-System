@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% load static %}
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <!-- Refresh Page after 5 seconds -->
+  {% comment %} <META HTTP-EQUIV="Refresh" CONTENT="5"> {% endcomment %}
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Statistics</title> 
+    <!-- Plugin css for this page -->
+    <link rel="stylesheet" href="weather.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/weather.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'js/select.dataTables.min.css' %}">
+    <!-- Chart.js JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Bootstrap js for this page -->
+  <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
+  <!-- inject:css -->
+  <link rel="stylesheet" href="{% static 'css/vertical-layout-light/style.css' %}">
+  <!-- endinject -->
+  <link rel="shortcut icon" href="{% static 'images/mini-logo.png' %}" />
+</head>
+<body>
+  <div class="container-scroller">
+  <!-- partial:partials/_navbar.html -->
+  <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+    <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
+      <a class="navbar-brand brand-logo mr-5" href="/"><img src="{% static 'images/logo.png'  %}" class="mr-2" alt="logo"/></a>
+      </div>
+    <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+      <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+        <span class="icon-menu"></span>
+      </button>
+      <ul class="navbar-nav mr-lg-2">
+        
+      </ul>
+      <ul class="navbar-nav navbar-nav-right">
+        <li class="profile_name">
+          <h6>Welcome <span class="profile_name_color"> {{name}} </span></h6>
+        </li>
+        <li class="nav-item nav-profile dropdown">
+          <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
+            <img src="{% static 'images/face1.jpg' %}" alt="profile" />
+          </a>
+          <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
+            <a class="dropdown-item" href="/">
+              <i class="ti-settings text-primary"></i>
+              Dashboard
+            </a>
+            <a class="dropdown-item" href="/statistics">
+              <i class="ti-settings text-primary"></i>
+              Statistics
+            </a>
+            <a class="dropdown-item" href="#">
+              <i class="ti-settings text-primary"></i>
+              Add Sensors
+            </a>
+            <a class="dropdown-item" href="/settings">
+              <i class="ti-settings text-primary"></i>
+              Settings
+            </a>
+            <a class="dropdown-item" href="/login">
+              <i class="ti-power-off text-primary"></i>
+              Logout
+            </a>
+          </div>
+        </li>
+      </ul>
+      <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+        <span class="icon-menu"></span>
+      </button>
+    </div>
+  </nav>
+  <!-- partial -->
+  <div class="container-fluid page-body-wrapper">
+    <!-- partial:partials/_sidebar.html -->
+    <nav class="sidebar sidebar-offcanvas" id="sidebar">
+      <ul class="nav">
+        <li class="nav-item">
+          <a class="nav-link" href="/">
+            <i class="icon-grid menu-icon"></i>
+            <span class="menu-title">Dashboard</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/statistics">
+            <i class="icon-grid menu-icon"></i>
+            <span class="menu-title">Statistics</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">
+            <i class="icon-grid menu-icon"></i>
+            <span class="menu-title">Add Sensors</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/settings">
+            <i class="icon-paper menu-icon"></i>
+            <span class="menu-title">Settings</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/login">
+            <i class="icon-paper menu-icon"></i>
+            <span class="menu-title">Logout</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+    <!-- partial -->
+
+<div class="container">
+  <h2 style="margin-top:4%; margin-left:35%;">
+    Statistics
+  </h2>
+  <table class="table" style="margin-top:2%;">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Sensor Key</th>
+        <th scope="col">Sensor Name</th>
+        <th scope="col">Plant</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      {% for sensor_key in unique_sensor_key %}
+      <tr>
+        <th scope="row">#</th>
+        <td>{{sensor_key}}</td>
+        <td>{{temp_sensor_name}}</td>
+        <td>Will be added soon</td>
+        <td><a class="btn btn-sm btn-warning" href={% url 'graph' sensor_key  %} target="_blank">View Graph</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  </div>
+  </div>
+    
+    <script src="{% static 'js/dataTables.select.min.js' %}"></script>
+    <script src="{% static 'js/off-canvas.js' %}"></script>
+  <script src="{% static 'js/hoverable-collapse.js' %}"></script>
+  <script src="{% static 'js/template.js' %}"></script>
+
+</body>
+
+</html>

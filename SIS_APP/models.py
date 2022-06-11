@@ -34,8 +34,8 @@ class Plant(models.Model):
 class Sensor(models.Model):
 
     sensor_id = models.AutoField(primary_key=True)
-    sensorID = str(sensor_id)
-    FK_sensor = models.ForeignKey('Plant', on_delete=models.CASCADE)
+    sensorkey = models.IntegerField()
+    FK_sensor = models.ForeignKey('WebUser', on_delete=models.CASCADE)
     sensor_name = models.CharField(max_length=50)
     moistuer_level = models.IntegerField()
     sensor_update_time = models.DateTimeField( default=datetime.now)
@@ -44,6 +44,16 @@ class Sensor(models.Model):
     def __str__(self):
         return self.sensor_name
 
+
+class ScheduleWater(models.Model):
+
+    FK_schedule = models.ForeignKey('WebUser', on_delete=models.CASCADE)
+    water_resource = models.CharField(max_length=50)
+    water_flow = models.IntegerField()
+    #knowledge base data here
+
+    def __str__(self):
+        return self.water_resource
 
 class ScheduleWater(models.Model):
 
