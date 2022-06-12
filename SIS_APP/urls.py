@@ -23,5 +23,6 @@ urlpatterns = [
     # path('weather', weatherAPI.weather, name='weather'),
     path('error404', views.error404, name='error404'),
     path('error500', views.error500, name='error500'),
-    path('sensor', views.sensor, name='sensor'),
+    path('sensor/<link>', views.sensor, name='sensor'),
+    path('pump', views.pump, name='pump'),
 ] 

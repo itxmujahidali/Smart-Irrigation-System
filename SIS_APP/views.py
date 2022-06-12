@@ -24,7 +24,7 @@ def index(request):
             info = WebUser.objects.filter(user_id = id)
             CITY = info[0].city
         except:
-            return HttpResponse ("City Error!")
+            return render (request, "login.html")
 
 
         # Your API key
@@ -301,6 +301,7 @@ def addsensors(request):
         try:
 
             #must use objects.get when you add data in DB through foreign key
+            id = request.session.get('id')
             user =  WebUser.objects.get(user_id=id)
 
             key = ""
@@ -421,7 +422,7 @@ def logout(request):
     return render(request, 'login.html')
 
 @csrf_exempt
-def sensor(request):
+def sensor(request, link):
 
     from datetime import datetime
 
@@ -438,11 +439,39 @@ def sensor(request):
     # datetime object containing current date and time
     now = datetime.now()
 
-    print (body["sensor_name"])
+    # print (body["sensor_name"])
+    user_id = (body["user_id"])
+    user_id = int(user_id)
+    sensor_key = (body["sensor_key"])
     sensor_name = (body["sensor_name"])
+    plant_name = (body["plant_name"])
+    moisture_level = (body["moisture_level"])
 
-    print (body["reading"])
-    reading = (body["reading"])
+    #must use objects.get when you add data in DB through foreign key
+    user =  WebUser.objects.get(user_id=user_id)
+    # #add data through foreign key in database
+    sensor = Sensor.objects.create(FK_sensor=user, sensorkey=sensor_key, plant_name=plant_name, sensor_name=sensor_name,
+        moistuer_level= moisture_level
+    )
+    sensor.save()
+
+    print(f'{"URL ---------------->",link}')
+    print(f'{"USER ID ---------------->",user_id, type(user_id)}')
+    print(f'{"sensor_name ---------------->",sensor_name}')
+    print(f'{"sensor_key ---------------->",sensor_key}')
+    print(f'{"plant_name ---------------->",plant_name}')
+    print(f'{"moisture_level 1 ---------------->",moisture_level}')
+
+
+
+
+
+    # sensor_name2 = (body["sensor_name2"])
+    # print(f'{"Sensor 2 ---------------->",sensor_name2}')
+    
+
+    # print (body["reading"])
+    # reading = (body["reading"])
 
     # print (body["positionX"])
     # positionX = (body["positionX"])
@@ -451,20 +480,20 @@ def sensor(request):
     # current_moisture = (body["current_moisture"])
 
     # datetime object containing current date and time
-    now = datetime.now()
-    date = now.strftime("%d/%m/%Y")
-    time = now.strftime("%H:%M:%S")
-    print("date and time =", date, time)
+    # now = datetime.now()
+    # date = now.strftime("%d/%m/%Y")
+    # time = now.strftime("%H:%M:%S")
+    # print("date and time =", date, time)
 
     if (os.path.isfile("data.csv")):  
         with open('data.csv', 'a', newline='') as file:
             writer = csv.writer(file)
-            writer.writerow([sensor_name, reading," ", date, time])
-            writer.writerow([sensor_name, reading," ", date, time])
+            # writer.writerow([sensor_name, reading," ", date, time])
+            # writer.writerow([sensor_name, reading," ", date, time])
     else:
          with open('data.csv', 'w', newline='') as file:
             writer = csv.writer(file)
-            writer.writerow([sensor_name, reading," ", date, time])
+            # writer.writerow([sensor_name, reading," ", date, time])
 
     return HttpResponse ("Success!")
 
@@ -481,6 +510,10 @@ def sensor(request):
     # current_moisture = body['current_moisture']
     # return HttpResponse(email)
 
+
+def pump(request):
+    talk = 1
+    return HttpResponse (talk)
 
 def error404(request, exception):
     context = {}
