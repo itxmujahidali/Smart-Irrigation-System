@@ -512,25 +512,11 @@ def sensor(request, link):
 
 
 def pump(request):
-
-    if(request.method == "POST"):
-        id = request.session.get('id')
-        user =  WebUser.objects.get(user_id=id)
-        pump = request.POST["pump"]
-        pump = int(pump)
-        if (pump == 1):
-            talk = 1
-            user.pump = talk
-            user.save(update_fields=['pump'])
-            return HttpResponse ("Water Pump ON")
-        else:
-            (pump == 0)
-            talk = 0
-            user.pump = talk
-            user.save(update_fields=['pump'])
-            return HttpResponse ("Water Pump OFF")
-    else:
-        return render(request, 'waterpump.html')
+    return render(request, 'waterpump.html')
+def pump_on(request):
+    return HttpResponse(1)
+def pump_off(request):
+    return HttpResponse(0)
     
 
 def error404(request, exception):

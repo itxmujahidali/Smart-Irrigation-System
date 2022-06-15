@@ -25,4 +25,6 @@ urlpatterns = [
     path('error500', views.error500, name='error500'),
     path('sensor/<link>', views.sensor, name='sensor'),
     path('pump', views.pump, name='pump'),
+    path('pumpon', views.pump_on, name='pump_on'),
+    path('pumpoff', views.pump_off, name='pump_off'),
 ] 

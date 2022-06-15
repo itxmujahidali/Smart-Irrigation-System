@@ -1,61 +1,167 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap demo</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-  </head>
-  <body>
-    <div class="container">
-    <h1>Water Pump!</h1>
-
-    <form class="toggle" method="post" action="pump">
-      {% csrf_token %}
-      <input type="radio" id="choice1" name="pump" value="0">
-      <label for="choice1">OFF</label>
-
-      <input type="radio" id="choice2" name="pump" value="1">
-      <label for="choice2">ON</label><br>
-      <input type="submit">
-    </form>
-
-  </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
-  </body>
-</html>
-
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
+  {% load static %}
 <head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Smart Irrigation System</title> 
+  <!-- Plugin css for this page -->
+  <link rel="stylesheet" href="weather.css">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/weather.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'js/select.dataTables.min.css' %}">
+  <!-- Bootstrap js for this page -->
+  <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
 
+
+
+  <!-- inject:css -->
+  <link rel="stylesheet" href="{% static 'css/vertical-layout-light/style.css' %}">
+  <!-- endinject -->
+  <link rel="shortcut icon" href="{% static 'images/mini-logo.png' %}" />
 </head>
+<body>
+  <div class="container-scroller">
+    <!-- partial:partials/_navbar.html -->
+    <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+      <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
+        <a class="navbar-brand brand-logo mr-5" href="/"><img src="{% static 'images/logo.png'  %}" class="mr-2" alt="logo"/></a>
+        </div>
+      <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+        <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+          <span class="icon-menu"></span>
+        </button>
+        <ul class="navbar-nav mr-lg-2">
+          
+        </ul>
+        <ul class="navbar-nav navbar-nav-right">
+          
+          <li class="nav-item nav-profile dropdown">
+          
+            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
+              <a class="dropdown-item" href="/">
+                <i class="ti-settings text-primary"></i>
+                Dashboard
+              </a>
+              <a class="dropdown-item" href="/statistics">
+                <i class="ti-settings text-primary"></i>
+                Statistics
+              </a>
+              <a class="dropdown-item" href="/addsensors">
+                <i class="ti-settings text-primary"></i>
+                Add Sensors
+              </a>
+              <a class="dropdown-item" href="/pump">
+                <i class="ti-settings text-primary"></i>
+                Water Pump
+              </a>
+              <a class="dropdown-item" href="/settings">
+                <i class="ti-settings text-primary"></i>
+                Settings
+              </a>
+              <a class="dropdown-item" href="/login">
+                <i class="ti-power-off text-primary"></i>
+                Logout
+              </a>
+            </div>
+          </li>
+        </ul>
+        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+          <span class="icon-menu"></span>
+        </button>
+      </div>
+    </nav>
+    <!-- partial -->
     <div class="container-fluid page-body-wrapper">
       <!-- partial:partials/_sidebar.html -->
+      <nav class="sidebar sidebar-offcanvas" id="sidebar">
+        <ul class="nav">
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="icon-grid menu-icon"></i>
+              <span class="menu-title">Dashboard</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/statistics">
+              <i class="icon-grid menu-icon"></i>
+              <span class="menu-title">Statistics</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/addsensors">
+              <i class="icon-grid menu-icon"></i>
+              <span class="menu-title">Add Sensors</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/pump">
+              <i class="icon-grid menu-icon"></i>
+              <span class="menu-title">Water Pump</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/settings">
+              <i class="icon-paper menu-icon"></i>
+              <span class="menu-title">Settings</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/login">
+              <i class="icon-paper menu-icon"></i>
+              <span class="menu-title">Logout</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
       <!-- partial -->
-      <div style="margin-top:60%">
-        
+      <div class="main-panel">
+        <div class="content-wrapper">
+          <div align="center" style="margin-top:1%; margin-right:8%;">
+          <h3> Control Your Water-Pump! </h3>
+          <a href= "/pumpoff" class="btn btn-info" target="_blank">OFF</a>
+          <a href= "/pumpon" class="btn btn-primary" target="_blank">ON</a>
+          </div>
+          <br> <br>
+          <div align="center" style="margin-top:1%; margin-right:8%;">
+          <h3> Automate Your Water-Pump! </h3>
+          <a href= "/pumpon" class="btn btn-danger" target="_blank">Automatic</a>
+          </div>
+
+        <!-- partial -->
       </div>
+      <!-- main-panel ends -->
     </div>
+    <!-- page-body-wrapper ends -->
+  </div>
+  <!-- container-scroller -->
+
+  <script src="{% static 'js/dataTables.select.min.js' %}"></script>
+  <script src="{% static 'js/off-canvas.js' %}"></script>
+  <script src="{% static 'js/hoverable-collapse.js' %}"></script>
+  <script src="{% static 'js/template.js' %}"></script>
+  <script src="{% static 'js/settings.js' %}"></script>
+  <script src="{% static 'js/todolist.js' %}"></script>
+  <script src="{% static 'js/dashboard.js' %}"></script>
+  <script src="{% static 'js/weather.js' %}"></script>
+  <script src="{% static 'js/Chart.roundedBarCharts.js' %}"></script>
 </body>
 
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
