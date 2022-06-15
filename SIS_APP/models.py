@@ -12,6 +12,7 @@ class WebUser(models.Model):
     Password = models.CharField(max_length=50)
     recovery_code = models.CharField(max_length=6)
     city = models.CharField(max_length=100)
+    pump = models.IntegerField()
     account_created = datetime.now()
 
     def __str__(self):
