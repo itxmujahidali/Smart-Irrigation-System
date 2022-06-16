@@ -119,14 +119,19 @@
       <div class="main-panel">
         <div class="content-wrapper">
           <div align="center" style="margin-top:1%; margin-right:8%;">
-          <h3> Control Your Water-Pump! </h3>
-          <a href= "/pumpoff" class="btn btn-info" target="_blank">OFF</a>
-          <a href= "/pumpon" class="btn btn-primary" target="_blank">ON</a>
-          </div>
-          <br> <br>
-          <div align="center" style="margin-top:1%; margin-right:8%;">
-          <h3> Automate Your Water-Pump! </h3>
-          <a href= "/pumpon" class="btn btn-danger" target="_blank">Automatic</a>
+            <form action="" method="get">
+              <h3> Control Your Water-Pump! </h3>
+              <span class="btn btn-info"> <input type="radio" name="pump" value="0"> OFF </span>
+                {% comment %} <a href= "/pumpoff" class="btn btn-info" target="_blank">OFF</a>
+                <a href= "/pumpon" class="btn btn-primary" target="_blank">ON</a> {% endcomment %}
+                <span class="btn btn-primary"><input type="radio" name="pump" value="1"> ON</span>
+                <span class="btn btn-warning"><input type="radio" name="pump" value="2"> Automatic</span>
+                <br>
+                <br>
+                <input type="submit" class="btn btn-danger" value="Action">
+              </div>
+
+            </form>
           </div>
 
         <!-- partial -->

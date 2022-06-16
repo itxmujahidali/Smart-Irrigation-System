@@ -27,4 +27,5 @@ urlpatterns = [
     path('pump', views.pump, name='pump'),
     path('pumpon', views.pump_on, name='pump_on'),
     path('pumpoff', views.pump_off, name='pump_off'),
+    path('pump_automatic', views.pump_automatic, name='pump_automatic'),
 ] 

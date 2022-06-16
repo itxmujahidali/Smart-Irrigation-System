@@ -3,7 +3,7 @@ import json, csv, os.path, requests
 from datetime import datetime
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from .models import WebUser, Sensor
 from django.views.decorators.csrf import csrf_exempt
 import smtplib
@@ -512,11 +512,33 @@ def sensor(request, link):
 
 
 def pump(request):
-    return render(request, 'waterpump.html')
+    try:
+        if request.method  == "GET":
+            pump = request.GET.get("pump")
+            idd = request.session.get('id')
+            user =  WebUser.objects.get(user_id=idd)
+            # return HttpResponse(pump)
+            pump = int(pump)
+            if (pump == 0):
+                user.pump = pump
+                user.save(update_fields=['pump'])
+                return HttpResponseRedirect('pumpoff')
+            elif (pump == 1):
+                user.pump = pump
+                user.save(update_fields=['pump'])
+                return HttpResponseRedirect('pumpon')
+            elif (pump == 2):
+                user.pump = pump
+                user.save(update_fields=['pump'])
+                return HttpResponseRedirect('pump_automatic')
+    except:
+         return render(request, 'waterpump.html')
 def pump_on(request):
     return HttpResponse(1)
 def pump_off(request):
     return HttpResponse(0)
+def pump_automatic(request):
+    return HttpResponse(2)
     
 
 def error404(request, exception):
