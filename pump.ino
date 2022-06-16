@@ -2,11 +2,11 @@
 #include <ESP8266HTTPClient.h>
 #include <WiFiClient.h>
 
-const char* ssid = "Ali-Net-service-342";
-const char* password = "123pakistan";
+const char* ssid = "Jan Choro";
+const char* password = "Keeptrying";
 
 //Your Domain name with URL path or IP address with path
-String serverName = "http://192.168.1.107:8000/pump";
+String serverName = "http://192.168.10.18:8000/pump";
 
 // the following variables are unsigned longs because the time, measured in
 // milliseconds, will quickly become a bigger number than can be stored in an int.
@@ -14,11 +14,12 @@ unsigned long lastTime = 0;
 // Timer set to 10 minutes (600000)
 //unsigned long timerDelay = 600000;
 // Set timer to 5 seconds (5000)
-unsigned long timerDelay = 5000;
+unsigned long timerDelay = 10000;
+const int relay = 5;
 
 void setup() {
   Serial.begin(115200); 
-
+  pinMode(5,OUTPUT);
   WiFi.begin(ssid, password);
   Serial.println("Connecting");
   while(WiFi.status() != WL_CONNECTED) {
@@ -40,7 +41,7 @@ void loop() {
       WiFiClient client;
       HTTPClient http;
 
-      String serverPath = serverName + "?temperature=24.37";
+      String serverPath = serverName;
       
       // Your Domain name with URL path or IP address with path
       http.begin(client, serverPath.c_str());
@@ -52,6 +53,14 @@ void loop() {
         Serial.print("HTTP Response code: ");
         Serial.println(httpResponseCode);
         String payload = http.getString();
+        if (payload == "0")
+        {
+          digitalWrite(relay, HIGH);
+        }
+        else if(payload == "1")
+        {
+          digitalWrite(relay,LOW);
+        }
         Serial.println(payload);
       }
       else {
