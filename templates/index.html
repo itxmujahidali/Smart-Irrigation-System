@@ -41,7 +41,7 @@
           </li>
           <li class="nav-item nav-profile dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-              <img src="{% static 'images/face1.jpg' %}" alt="profile" />
+              <img src="{% static 'images/face1.svg' %}" alt="profile" />
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
               <a class="dropdown-item" href="/">
@@ -64,7 +64,7 @@
                 <i class="ti-settings text-primary"></i>
                 Settings
               </a>
-              <a class="dropdown-item" href="/login">
+              <a class="dropdown-item" href="/signout">
                 <i class="ti-power-off text-primary"></i>
                 Logout
               </a>
@@ -112,7 +112,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/login">
+            <a class="nav-link" href="/signout">
               <i class="icon-paper menu-icon"></i>
               <span class="menu-title">Logout</span>
             </a>
@@ -183,18 +183,16 @@
                 <div class="col-md-6 mb-4 stretch-card transparent">
                   <div class="card card-tale">
                     <div class="card-body">
-                      <p class="mb-4">Total Plants</p>
-                      <p class="fs-30 mb-2">4006</p>
-                      <p>10.00% (30 days)</p>
+                      <p class="mb-4">Total Sensors</p>
+                      <p class="fs-30 mb-2">{{total_sensor}}</p>
                     </div>
                   </div>
                 </div>
                 <div class="col-md-6 mb-4 stretch-card transparent">
                   <div class="card card-dark-blue">
                     <div class="card-body">
-                      <p class="mb-4">Total Plants Category</p>
-                      <p class="fs-30 mb-2">61344</p>
-                      <p>22.00% (30 days)</p>
+                      <p class="mb-4">Total Sensor Readings</p>
+                      <p class="fs-30 mb-2">{{sensor_readings}}</p>
                     </div>
                   </div>
                 </div>
@@ -203,18 +201,16 @@
                 <div class="col-md-6 mb-4 mb-lg-0 stretch-card transparent">
                   <div class="card card-light-blue">
                     <div class="card-body">
-                      <p class="mb-4">Total Sensors</p>
-                      <p class="fs-30 mb-2">34040</p>
-                      <p>2.00% (30 days)</p>
+                      <p class="mb-4">Total Plants Category</p>
+                      <p class="fs-30 mb-2">{{total_plants}}</p>
                     </div>
                   </div>
                 </div>
                 <div class="col-md-6 stretch-card transparent">
                   <div class="card card-light-danger">
                     <div class="card-body">
-                      <p class="mb-4">Total Sensor Readings</p>
-                      <p class="fs-30 mb-2">47033</p>
-                      <p>0.22% (30 days)</p>
+                      <p class="mb-4">Water Pump</p>
+                      <p class="fs-30 mb-2">{{pump_status}}</p>
                     </div>
                   </div>
                 </div>
@@ -229,68 +225,22 @@
                   <div class="row">
                     <div class="col-12">
                       <div class="table-responsive">
-                        <table id="example" class="display expandable-table" style="width:100%">
+                        <table id="example" class="display expandable-table" style="width:100%; ">
                           <thead>
-                            <tr>
+                            <tr align='center'>
                               <th>Sr#</th>
-                              <th>Plant Name</th>
-                              <th> Square Feet</th>
-                              <th>Total Sensor</th>
-                              <th>Sensor Status</th>
-                              <!-- <th>Sensor Offline</th> -->
-                              <th>Wet/Dry</th>
-                              <th>Update Time</th>
+                              <th>Sensor Key</th>
+                              <th>Sensor Name</th>
+                              <th>Plant</th>
                             </tr>
-                            <tr>
-                              <td>1</td>
-                              <td>Tree</td>
-                              <td>green</td>
-                              <td>sensor 1</td>
-                              <td>sensor 2</td>
-                              <td>Status</td>
-                              <td>Updated at</td>
-                              <td></td>
+                            {% for unique_key in list_set_sensor %}
+                            <tr align='center'>
+                              <td>#</td>
+                              <td>{{unique_key}}</td>
+                              <td>{{sensor__name}}</td>
+                              <td>{{plant_name}}</td>
                             </tr>
-                            <tr>
-                              <td>2</td>
-                              <td>Tree</td>
-                              <td>green</td>
-                              <td>sensor 1</td>
-                              <td>sensor 2</td>
-                              <td>Status</td>
-                              <td>Updated at</td>
-                              <td></td>
-                            </tr>
-                            <tr>
-                              <td>3</td>
-                              <td>Tree</td>
-                              <td>green</td>
-                              <td>sensor 1</td>
-                              <td>sensor 2</td>
-                              <td>Status</td>
-                              <td>Updated at</td>
-                              <td></td>
-                            </tr>
-                            <tr>
-                              <td>4</td>
-                              <td>Tree</td>
-                              <td>green</td>
-                              <td>sensor 1</td>
-                              <td>sensor 2</td>
-                              <td>Status</td>
-                              <td>Updated at</td>
-                              <td></td>
-                            </tr>
-                            <tr>
-                              <td>5</td>
-                              <td>Tree</td>
-                              <td>green</td>
-                              <td>sensor 1</td>
-                              <td>sensor 2</td>
-                              <td>Status</td>
-                              <td>Updated at</td>
-                              <td></td>
-                            </tr>
+                            {% endfor %}
                           </thead>
                       </table>
                       </div>

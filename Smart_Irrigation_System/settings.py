@@ -48,6 +48,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
 ]
 
 ROOT_URLCONF = 'Smart_Irrigation_System.urls'
@@ -70,6 +71,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Smart_Irrigation_System.wsgi.application'
 
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_COOKIE_AGE = 21600 # set just 10 seconds to test
+SESSION_SAVE_EVERY_REQUEST = False
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases

@@ -32,13 +32,13 @@
         <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
           <span class="icon-menu"></span>
         </button>
-        <ul class="navbar-nav mr-lg-2">
-          
+        <ul class="navbar-nav mr-lg-2"> 
         </ul>
         <ul class="navbar-nav navbar-nav-right">
-          
           <li class="nav-item nav-profile dropdown">
-          
+            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
+              <img src="{% static 'images/face1.svg' %}" alt="profile" />
+            </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
               <a class="dropdown-item" href="/">
                 <i class="ti-settings text-primary"></i>
@@ -56,11 +56,12 @@
                 <i class="ti-settings text-primary"></i>
                 Water Pump
               </a>
+  
               <a class="dropdown-item" href="/settings">
                 <i class="ti-settings text-primary"></i>
                 Settings
               </a>
-              <a class="dropdown-item" href="/login">
+              <a class="dropdown-item" href="/signout">
                 <i class="ti-power-off text-primary"></i>
                 Logout
               </a>
@@ -72,6 +73,7 @@
         </button>
       </div>
     </nav>
+    
     <!-- partial -->
     <div class="container-fluid page-body-wrapper">
       <!-- partial:partials/_sidebar.html -->
@@ -108,7 +110,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/login">
+            <a class="nav-link" href="/signout">
               <i class="icon-paper menu-icon"></i>
               <span class="menu-title">Logout</span>
             </a>
@@ -119,20 +121,25 @@
       <div class="main-panel">
         <div class="content-wrapper">
           <div align="center" style="margin-top:1%; margin-right:8%;">
-            <form action="" method="get">
+            <form action="" method="post">
+              {% csrf_token %}
               <h3> Control Your Water-Pump! </h3>
               <span class="btn btn-info"> <input type="radio" name="pump" value="0"> OFF </span>
-                {% comment %} <a href= "/pumpoff" class="btn btn-info" target="_blank">OFF</a>
-                <a href= "/pumpon" class="btn btn-primary" target="_blank">ON</a> {% endcomment %}
+              {% comment %} <a href= "/pumpoff" class="btn btn-info" target="_blank">OFF</a>
+              <a href= "/pumpon" class="btn btn-primary" target="_blank">ON</a> {% endcomment %}
                 <span class="btn btn-primary"><input type="radio" name="pump" value="1"> ON</span>
                 <span class="btn btn-warning"><input type="radio" name="pump" value="2"> Automatic</span>
                 <br>
                 <br>
                 <input type="submit" class="btn btn-danger" value="Action">
               </div>
-
             </form>
-          </div>
+            <h3 style="margin-top:40px; margin-left: 34%; "> Water-Pump Status: <span style="color:red;">{{status}}</spna> </h3>
+              <br>
+              <div style="margin-left:42.5%; height:120px; width:120px;">
+              <img  src="{% static 'images/'%}{{pump_image}}.svg" alt="pump image" />
+              </div>
+            </div>
 
         <!-- partial -->
       </div>

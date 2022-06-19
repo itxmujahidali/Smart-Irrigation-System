@@ -8,6 +8,7 @@ from .models import WebUser, Sensor
 from django.views.decorators.csrf import csrf_exempt
 import smtplib
 from random import randint
+from django.http import JsonResponse
 
 
 # Create your views here.
@@ -77,6 +78,45 @@ def index(request):
             # humidity=dic_humidity, weather_report=dic_description, wind_speed=dic_speed, time_zone=dic_timezone)
             # api_database.save()
 
+            
+            user = WebUser.objects.get(user_id = id)
+            sensor = Sensor.objects.filter(FK_sensor = user)
+            sensor_readings = len(sensor)
+
+            sensor_key_list = []
+            sensor_plant_list = []
+            sensor_name_list = []
+
+            for sensor_index in sensor:
+                sensor_key = sensor_index.sensorkey
+                sensor_plant = sensor_index.plant_name
+                sensor_name = sensor_index.sensor_name
+                sensor_name_list.append(sensor_name)
+                sensor_plant_list.append(sensor_plant)
+                sensor_key_list.append(sensor_key)
+
+            # insert the list to the set
+            list_set_plant = set(sensor_plant_list)
+            list_set_sensor = set(sensor_key_list)
+            # convert the set to the list
+            total_plants = len(list_set_plant)
+            total_sensor = len(list_set_sensor)
+
+            plant_name  = sensor_plant_list[0]
+            sensor__name = sensor_name_list[0]
+            print(f'unique_sensor_key------------->' , list_set_sensor)
+            print(f'Sensor Name------------->' , sensor__name)
+
+            status = user.pump
+            status = str(status)
+            if (status == "1"):
+                status = "ON"
+            elif (status == "2"):
+                status = "Automatic"
+            else:
+                status = "OFF"
+
+  
             return render (request, 'index.html', {
                 'name': user.name,
                 'CITY': CITY,
@@ -85,14 +125,133 @@ def index(request):
                 'dic_humidity': dic_humidity,
                 'dic_description': dic_description,
                 'dic_speed': dic_speed,
-                'dic_timezone': dic_timezone,}
-                )
+                'dic_timezone': dic_timezone,
+                'sensor_readings': sensor_readings,
+                'total_sensor': total_sensor,
+                'total_plants': total_plants,
+                'pump_status': status,
+                'list_set_sensor': list_set_sensor,
+                'plant_name': plant_name,
+                'sensor__name': sensor__name,
+                
+                }
+             )
 
         else:
-            # showing the error message
+            # user = WebUser.objects.get(user_id = id)
+            # sensor = Sensor.objects.filter(FK_sensor = user)
+            # sensor_readings = len(sensor)
+
+            # sensor_key_list = []
+            # sensor_plant_list = []
+            # sensor_name_list = []
+
+            # for sensor_index in sensor:
+            #     sensor_key = sensor_index.sensorkey
+            #     sensor_plant = sensor_index.plant_name
+            #     sensor_name = sensor_index.sensor_name
+            #     sensor_name_list.append(sensor_name)
+            #     sensor_plant_list.append(sensor_plant)
+            #     sensor_key_list.append(sensor_key)
+
+            # # insert the list to the set
+            # list_set_plant = set(sensor_plant_list)
+            # list_set_sensor = set(sensor_key_list)
+            # # convert the set to the list
+            # total_plants = len(list_set_plant)
+            # total_sensor = len(list_set_sensor)
+
+            # plant_name  = sensor_plant_list[1]
+            # sensor__name = sensor_name_list[1]
+            # print(f'unique_sensor_key------------->' , list_set_sensor)
+            # print(f'Sensor Name------------->' , sensor__name)
+
+            # status = user.pump
+            # status = int(status)
+            # if (status == 1):
+            #     status = "ON"
+            # else:
+            #     status = "OFF"
+            # # showing the error message
+            # return render (request, 'index.html', {
+            #     'name': user.name,
+            #     'sensor_readings': sensor_readings,
+            #     'total_sensor': total_sensor,
+            #     'total_plants': total_plants,
+            #     'pump_status': status,
+            #     'list_set_sensor': list_set_sensor,
+            #     'plant_name': plant_name,
+            #     'sensor__name': sensor__name,
+                
+            #     }
+            #  )
             return HttpResponse ("Error in the HTTP request")
     except:
-            return render (request, "index.html")
+        try:
+            user = WebUser.objects.get(user_id = id)
+            sensor = Sensor.objects.filter(FK_sensor = user)
+            sensor_readings = len(sensor)
+
+            sensor_key_list = []
+            sensor_plant_list = []
+            sensor_name_list = []
+
+            for sensor_index in sensor:
+                sensor_key = sensor_index.sensorkey
+                sensor_plant = sensor_index.plant_name
+                sensor_name = sensor_index.sensor_name
+                sensor_name_list.append(sensor_name)
+                sensor_plant_list.append(sensor_plant)
+                sensor_key_list.append(sensor_key)
+
+            # insert the list to the set
+            list_set_plant = set(sensor_plant_list)
+            list_set_sensor = set(sensor_key_list)
+            # convert the set to the list
+            total_plants = len(list_set_plant)
+            total_sensor = len(list_set_sensor)
+
+            plant_name  = sensor_plant_list[0]
+            sensor__name = sensor_name_list[0]
+            print(f'unique_sensor_key------------->' , list_set_sensor)
+            print(f'Sensor Name------------->' , sensor__name)
+
+            status = user.pump
+            status = str(status)
+            if (status == "1"):
+                status = "ON"
+            elif (status == "2"):
+                status = "Automatic"
+            else:
+                status = "OFF"
+
+
+            #show internet API error
+            CITY = "Error" 
+            dic_description = "Inernet not available!" 
+            name = '"Internet Not Connected"'
+
+            return render (request, 'index.html', {
+                'CITY': CITY,
+                'dic_description': dic_description,
+                'sensor_readings': sensor_readings,
+                'total_sensor': total_sensor,
+                'total_plants': total_plants,
+                'pump_status': status,
+                'list_set_sensor': list_set_sensor,
+                'plant_name': plant_name,
+                'sensor__name': sensor__name,
+                'name': name,
+                
+                }
+                )
+        except:
+            return render(request, 'login.html')
+
+        # except:
+        # return HttpResponse("except okay")
+        # return render (request, 'index.html')
+
     ##################################################################################################
 
     # API Credentials
@@ -142,21 +301,36 @@ def login(request):
 def register(request):
     if request.method == 'POST':
         name = request.POST['name']
-        email = request.POST['email']
+        user_email = request.POST['email']
         city = request.POST['city']
         password1 = request.POST['password1']
         password2 = request.POST['password2']
-
-        if(password1 == password2):
-            password = password1
-            # Sending HTML-Data to Model for store into Database!
-            # Creating class object
-            User = WebUser(name=name, email=email, city=city, Password=password)
-            User.save()
-            
-            return render(request, 'login.html')
-        else:
-            return HttpResponse("Password didn't match!")
+        dbemail = ""
+        try:
+            db_email = WebUser.objects.get(email = user_email)
+            dbemail = db_email.email
+        except:
+            if(password1 == password2):
+                try:
+                    if(dbemail != user_email):
+                        password = password1
+                        # Sending HTML-Data to Model for store into Database!
+                        # Creating class object
+                        User = WebUser(name=name, email=user_email,
+                                        city=city, Password=password)
+                        User.save()
+                        sensor = Sensor(sensorkey = NULL, FK_sensor = User, sensor_name = NULL, 
+                                        plant_name = NULL, moistuer_level = NULL)
+                        sensor.save()
+                        
+                        return render(request, 'login.html')
+                    else:
+                        return HttpResponse("User Already Exist!")
+                except:
+                    return HttpResponse("Might be user already exist!")
+            else:
+                return HttpResponse("Password didn't match!")
+        return HttpResponse("Might be user already exist or password didn't match! Try Again")
 
     else:
         return render(request, 'register.html')
@@ -292,8 +466,8 @@ def dangerzone(request):
         return render(request, 'deleteaccount.html')
 
 def addsensors(request):
+    id = request.session.get('id')
     if (request.method == "POST"):
-        id = request.session.get('id')
         input_sensorid = request.POST['sensorid']
         input_sensor_name = request.POST['sensorname']
         input_plantname = request.POST['plantname']
@@ -301,7 +475,7 @@ def addsensors(request):
         try:
 
             #must use objects.get when you add data in DB through foreign key
-            id = request.session.get('id')
+            # id = request.session.get('id')
             user =  WebUser.objects.get(user_id=id)
 
             key = ""
@@ -329,7 +503,7 @@ def addsensors(request):
         except:
             return HttpResponse("Something went wrong!")
     else:
-        return render(request, 'addsensors.html')
+        return render(request, 'addsensors.html', {'user_id': id})
 
 
 def forgetpassword1(request):
@@ -417,7 +591,11 @@ def forgetpassword3(request):
 def forgetpassword4(request):
     return render(request, 'forgetpassword4.html')
 
-def logout(request):
+def doc(request):
+    return render(request, 'documentation.html')
+
+def signout(request):
+    idd = request.session.get('id')
     request.session.flush()
     return render(request, 'login.html')
 
@@ -485,6 +663,7 @@ def sensor(request, link):
     # time = now.strftime("%H:%M:%S")
     # print("date and time =", date, time)
 
+
     if (os.path.isfile("data.csv")):  
         with open('data.csv', 'a', newline='') as file:
             writer = csv.writer(file)
@@ -512,33 +691,63 @@ def sensor(request, link):
 
 
 def pump(request):
-    try:
-        if request.method  == "GET":
-            pump = request.GET.get("pump")
-            idd = request.session.get('id')
-            user =  WebUser.objects.get(user_id=idd)
-            # return HttpResponse(pump)
+    Id = request.session.get('id')
+    if request.method  == "POST":
+        try:
+            pump = request.POST["pump"]
             pump = int(pump)
+            user = WebUser.objects.get(user_id = Id)
             if (pump == 0):
-                user.pump = pump
+                user.pump = 0
+                user.save
                 user.save(update_fields=['pump'])
-                return HttpResponseRedirect('pumpoff')
+                return HttpResponse("Pump has been Off!")
             elif (pump == 1):
-                user.pump = pump
+                user.pump = 1
                 user.save(update_fields=['pump'])
-                return HttpResponseRedirect('pumpon')
+                return HttpResponse("Pump has been ON!")
             elif (pump == 2):
-                user.pump = pump
+                user.pump = 2
                 user.save(update_fields=['pump'])
-                return HttpResponseRedirect('pump_automatic')
-    except:
-         return render(request, 'waterpump.html')
-def pump_on(request):
-    return HttpResponse(1)
+                return HttpResponse("Automatic Pump System has been Activat!")
+        except:
+            return HttpResponse("Page not load!")
+    else:
+        user = WebUser.objects.get(user_id = Id)
+        status = user.pump
+        status = str(status)
+        if (status == "1"):
+            # img = (os.path.isfile("pumpon.svg"))
+            pump_image = "pumpon"
+            status = "ON"
+        if (status == "2"):
+            # img = (os.path.isfile("pumpon.svg"))
+            pump_image = "automatic"
+            status = "Automatic"
+        else:
+            status = "OFF"
+            pump_image = "pumpoff"
+        return render(request, 'waterpump.html', {'status': status, 'pump_image':pump_image})
+        
+
+@csrf_exempt
+def pumpstatus(request,link):
+    user = WebUser.objects.get(user_id=link)
+    status = user.pump
+    if (status == 1):
+        return HttpResponse(1)
+    if (status == 0):
+        return HttpResponse(0)
+    else:
+        return HttpResponse("else condition")   
+
+
 def pump_off(request):
-    return HttpResponse(0)
-def pump_automatic(request):
-    return HttpResponse(2)
+        return HttpResponse(0)
+# def pump_off(request):
+#     return HttpResponse(0)
+# def pump_automatic(request):
+#     return HttpResponse(2)
     
 
 def error404(request, exception):
