@@ -15,12 +15,11 @@ unsigned long lastTime = 0;
 // Timer set to 10 minutes (600000)
 //unsigned long timerDelay = 600000;
 // Set timer to 5 seconds (5000)
-unsigned long timerDelay = 70000;
-const int relay = 5;
+unsigned long timerDelay = 3000;
 
 void setup() {
   Serial.begin(115200); 
-  pinMode(5,OUTPUT);
+  pinMode(D5,OUTPUT);
   WiFi.begin(ssid, password);
   Serial.println("Connecting");
   while(WiFi.status() != WL_CONNECTED) {
@@ -57,11 +56,11 @@ void loop() {
         String payload = http.getString();
         if (payload == "0")
         {
-          digitalWrite(relay, HIGH);
+          digitalWrite(D5, LOW);
         }
         else if(payload == "1")
         {
-          digitalWrite(relay,LOW);
+          digitalWrite(D5,HIGH);
         }
         Serial.println(payload);
       }
