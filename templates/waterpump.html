@@ -124,10 +124,10 @@
             <form action="" method="post">
               {% csrf_token %}
               <h3> Control Your Water-Pump! </h3>
-              <span class="btn btn-info"> <input type="radio" name="pump" value="0"> OFF </span>
+              <span class="btn btn-info"> <input type="radio" name="pump" value="1"> OFF </span>
               {% comment %} <a href= "/pumpoff" class="btn btn-info" target="_blank">OFF</a>
               <a href= "/pumpon" class="btn btn-primary" target="_blank">ON</a> {% endcomment %}
-                <span class="btn btn-primary"><input type="radio" name="pump" value="1"> ON</span>
+                <span class="btn btn-primary"><input type="radio" name="pump" value="0"> ON</span>
                 <span class="btn btn-warning"><input type="radio" name="pump" value="2"> Automatic</span>
                 <br>
                 <br>

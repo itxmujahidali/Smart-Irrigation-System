@@ -29,5 +29,6 @@ urlpatterns = [
     # path("URL endpoint/"<path converter: URL link>, view_name.pumpstatus, name = "pumpstatus"),
     path('pumpoff', views.pump_off, name='pump_off'),
     path('doc', views.doc, name='doc'),
+    path('ml_model', views.ml_model, name='ml_model'),
     # path('pump_automatic', views.pump_automatic, name='pump_automatic'),
 ] 

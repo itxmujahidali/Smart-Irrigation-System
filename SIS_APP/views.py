@@ -10,6 +10,12 @@ import smtplib
 from random import randint
 from django.http import JsonResponse
 
+import tensorflow as tf
+import numpy as np
+import pandas as pd
+import csv
+import matplotlib as plt
+
 
 # Create your views here.
 
@@ -689,6 +695,72 @@ def sensor(request, link):
     # current_moisture = body['current_moisture']
     # return HttpResponse(email)
 
+def ml_model(request):
+    input_columns = ['year', 'month', 'day', 'hour', 'minute', 'moisture0', 'moisture1','moisture2']
+    prediction = ['moisture3']
+    train_size = 3000
+    test_size = 1000
+    
+    csv_filename = os.path.join(os.path.dirname(__file__), 'plant_vase1.CSV')
+    data_frame = pd.read_csv(csv_filename)
+    # h5file = os.path.join(os.path.dirname(__file__), 'weights.h5')
+    # h5 = h5py.File(h5file, 'r')
+    # print('H5 Read')
+    # return HttpResponse(h5)
+        
+    data_frame.columns
+
+    data_frame.drop(columns=['irrgation'])
+
+    # data_frame[['moisture0', 'moisture1','moisture2', 'moisture3']].plot()
+
+    X_train = data_frame[input_columns][:train_size]
+    Y_train = data_frame[prediction][:train_size]
+    X_test = data_frame[input_columns][train_size:]
+    Y_test = data_frame[prediction][train_size:]
+
+    X_train.shape, Y_train.shape
+
+    model = tf.keras.models.Sequential()
+    model.add(tf.keras.layers.Dense(units=1, input_shape=(len(input_columns),)))
+    model.summary()
+
+    model.compile(optimizer='adam', loss='MSE', metrics=['mean_absolute_error'])
+
+    model.fit(X_train,Y_train, epochs=150)
+
+    # model.evaluate(X_test, Y_test)
+
+    # model.metrics_names
+
+    # weights = np.array(model.get_weights())
+    # model.get_weights()
+
+    Y_test.to_numpy()[58]
+
+    prediction = model.predict(X_test.to_numpy())
+
+    count = 0
+    for i in range(len(X_test)):
+        if np.abs(prediction[i][0] - Y_test.to_numpy()[i]) > 0.1:
+            count += 1
+    print(count/len(X_test))
+
+    letter = []
+    for x in prediction:
+        letter.extend(x)
+    average = sum(letter) / len(letter)
+    # final_value = int(average)
+    print(f'prediction --------------->',prediction)
+    print(f'Average ----------------->', average)
+    # print(f'----------------->', final_value)
+    # plt.plot(prediction)
+    # plt.show()
+    return HttpResponse(average)
+
+
+
+
 
 def pump(request):
     Id = request.session.get('id')
@@ -701,11 +773,11 @@ def pump(request):
                 user.pump = 0
                 user.save
                 user.save(update_fields=['pump'])
-                return HttpResponse("Pump has been Off!")
+                return HttpResponse("Pump has been ON!")
             elif (pump == 1):
                 user.pump = 1
                 user.save(update_fields=['pump'])
-                return HttpResponse("Pump has been ON!")
+                return HttpResponse("Pump has been OFF!")
             elif (pump == 2):
                 user.pump = 2
                 user.save(update_fields=['pump'])
@@ -720,7 +792,7 @@ def pump(request):
             # img = (os.path.isfile("pumpon.svg"))
             pump_image = "pumpon"
             status = "ON"
-        if (status == "2"):
+        elif (status == "2"):
             # img = (os.path.isfile("pumpon.svg"))
             pump_image = "automatic"
             status = "Automatic"
