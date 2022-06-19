@@ -74,3 +74,6 @@ required for the development are Django, Python and Machine Learning.
 - Find manage.py file and open cmd at the same path where manage.py file exist!
 #### 2.3.2 Run Server
 - python manage.py runserver
+#### 2.3.3 Admin Pannel
+- Username: mujahid
+- Password: mujahidsite1122
