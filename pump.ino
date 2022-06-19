@@ -1,12 +1,13 @@
+
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
 #include <WiFiClient.h>
 
 const char* ssid = "Jan Choro";
-const char* password = "Keeptrying";
+const char* password = "LH449900";
 
 //Your Domain name with URL path or IP address with path
-String serverName = "http://192.168.10.18:8000/pump";
+String serverName = "http://192.168.10.15:8000/pumpstatus/7";
 
 // the following variables are unsigned longs because the time, measured in
 // milliseconds, will quickly become a bigger number than can be stored in an int.
@@ -14,7 +15,7 @@ unsigned long lastTime = 0;
 // Timer set to 10 minutes (600000)
 //unsigned long timerDelay = 600000;
 // Set timer to 5 seconds (5000)
-unsigned long timerDelay = 10000;
+unsigned long timerDelay = 70000;
 const int relay = 5;
 
 void setup() {
@@ -45,9 +46,10 @@ void loop() {
       
       // Your Domain name with URL path or IP address with path
       http.begin(client, serverPath.c_str());
+      http.addHeader("Content-Type", "text/plain");
       
-      // Send HTTP GET request
-      int httpResponseCode = http.GET();
+      // Send POST GET request
+      int httpResponseCode = http.POST("Message from WATER-PUMP");
       
       if (httpResponseCode>0) {
         Serial.print("HTTP Response code: ");
